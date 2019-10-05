@@ -1,24 +1,12 @@
-% % % % % % % % % % % % % % % % QUESTÃO 2 % % % % % % % % % % % % % % % %
-
-% Questão 2 da tarefa referente à disciplina CIRCUITOS ELÉTRICOS II feita
-% pelo grupo Composto por:
-
-% Ana Paula Chaves Cabral - 20170024791
-% Diana Bezerra Correia Lima - 20170017358
-% Ruan Carlos Virginio dos Santos - 20170018711
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-
 clear all
 clc
 
-
 % Como vamos trabalhar com os dados em laplace, precisaremos usar os
-% valores como symbolic, tanto no tempo quanto na frequência
+% valores como symbolic, tanto no tempo quanto na frequÃªncia
 
 syms s t at ac faset fasec;
 
-%% Nesta primeira seção, abrimos a planilha de entrada de dados do excel (Apenas formatos .xlsx e .xls)
+%% Nesta primeira seÃ§Ã£o, abrimos a planilha de entrada de dados do excel (Apenas formatos .xlsx e .xls)
 
 [file, path] = uigetfile({'*.xlsx;*.xls'});
 if(file==0) 
@@ -28,7 +16,7 @@ end
 
 dados = xlsread(strcat(path,file)); 
 
-% Lendo os dados de cada coluna do arquivo e salvando nas variáveis
+% Lendo os dados de cada coluna do arquivo e salvando nas variÃ¡veis
 
 Nos = dados(:,1:2);
 R = dados(:,3); 
@@ -47,18 +35,18 @@ v0 = dados(:,15);
 TipoTensao = sym(dados(:,16));
 TipoCorrente = sym(dados(:,17));
 
-%% Nessa seção, encontramos o número de nós e ramos do circuito
+%% Nessa seÃ§Ã£o, encontramos o nÃºmero de nÃ³s e ramos do circuito
 
-% Como cada ramo sai de um certo nó N e chega em outro nó N, essa seção
+% Como cada ramo sai de um certo nÃ³ N e chega em outro nÃ³ N, essa seÃ§Ã£o
 % verifica os valores escritos nas duas primeiras colunas da planilha e
-% salva o maior valor encontrado na variável Nt
+% salva o maior valor encontrado na variÃ¡vel Nt
 
 Tamanho = size(dados); % Tamanho da matriz de dados (linhas, colunas)
-b = Tamanho(1); % O numero de linhas da matriz TAMANHO é o mesmo número de RAMOS do circuito
+b = Tamanho(1); % O numero de linhas da matriz TAMANHO Ã© o mesmo nÃºmero de RAMOS do circuito
 
-Nt = 0; % Número de NÓS
+Nt = 0; % NÃºmero de NÃ“S
 
-for i=1:b % Salva o maior número de nós analisando a coluna 1 da tabela
+for i=1:b % Salva o maior nÃºmero de nÃ³s analisando a coluna 1 da tabela
     ntemp = Nos(i,1);
     
     if(ntemp > Nt)
@@ -72,25 +60,25 @@ for i=1:b % Salva o maior número de nós analisando a coluna 1 da tabela
     end
 end
 
-%% Criando a Matriz de Incidência Ramo-Nó 
+%% Criando a Matriz de IncidÃªncia Ramo-NÃ³ 
 
-% Criamos uma matriz nula do tamanho Número de Nós x Número de Ramos para
-% receber a matriz incidência com "1" se é um nó de saída e "-1" se for um
-% nó de entrada
+% Criamos uma matriz nula do tamanho NÃºmero de NÃ³s x NÃºmero de Ramos para
+% receber a matriz incidÃªncia com "1" se Ã© um nÃ³ de saÃ­da e "-1" se for um
+% nÃ³ de entrada
 
 Aa = zeros(Nt,b); 
 
-for i=1:b % Alteração dos valores da matriz de acordo com a saida e entrada no nó
+for i=1:b % AlteraÃ§Ã£o dos valores da matriz de acordo com a saida e entrada no nÃ³
     Aa((Nos(i,1)),i) =  1;
     Aa((Nos(i,2)),i) = -1;
 end
 
-% Assim, teremos a matriz Incidência Ramo-Nó Aa:
+% Assim, teremos a matriz IncidÃªncia Ramo-NÃ³ Aa:
 
 Aa
 
-% Agora, reduzimos essa matriz removendo sua última linha, que será
-% considerada a do nó de referência do circuito
+% Agora, reduzimos essa matriz removendo sua Ãºltima linha, que serÃ¡
+% considerada a do nÃ³ de referÃªncia do circuito
 
 for i=1:(Nt -1)
     for j=1:b
@@ -98,21 +86,21 @@ for i=1:(Nt -1)
     end
 end
 
-% O que nos deixa, portanto, com a matriz de incidência Ramo-Nó reduzida A
+% O que nos deixa, portanto, com a matriz de incidÃªncia Ramo-NÃ³ reduzida A
 
 A
 
-%% Nesta seção, começamos as trasnformações em Laplace:
+%% Nesta seÃ§Ã£o, comeÃ§amos as trasnformaÃ§Ãµes em Laplace:
 
-% Passaremos todas as variáveis com que estamos trabalhando para symbolic.
-% Quando os valores numéricos no tempo e na frequência forem iguais,
-% multiplicaremos pela transformada do impulso, que é 1.
+% Passaremos todas as variÃ¡veis com que estamos trabalhando para symbolic.
+% Quando os valores numÃ©ricos no tempo e na frequÃªncia forem iguais,
+% multiplicaremos pela transformada do impulso, que Ã© 1.
 
 impt = dirac(t);
 imp = laplace(impt);
 
-% Dentre as diversas opções de transformadas, escolhemos trabalhar com o
-% degrau, cuja transformada é:
+% Dentre as diversas opÃ§Ãµes de transformadas, escolhemos trabalhar com o
+% degrau, cuja transformada Ã©:
 
 ut = 1 + 0*t;
 u = laplace(ut);
@@ -235,9 +223,9 @@ end
 
 A = A*imp;
 
-% O for abaixo cria os vetores das impedâncias de cada um dos elementos que
-% podem estar em cada ramo. Ainda, ela cria as fontes de tensão que são
-% geradas na transformada a partir das condições iniciais no capacitor e no
+% O for abaixo cria os vetores das impedÃ¢ncias de cada um dos elementos que
+% podem estar em cada ramo. Ainda, ela cria as fontes de tensÃ£o que sÃ£o
+% geradas na transformada a partir das condiÃ§Ãµes iniciais no capacitor e no
 % indutor.
 
 for k = 1:b
@@ -256,101 +244,61 @@ end
 
 Vs
 
-%% Matrizes Fontes de tensão, fontes de corrente e impedâncias no ramo
+%% Matrizes Fontes de tensÃ£o, fontes de corrente e impedÃ¢ncias no ramo
 
-% A matriz fontes de tensão independentes no ramo recebe as tensões geradas
-% pelo capacitor e indutor. A matriz impedância recebe a soma das
-% impedâncias geradas por todos os elementos também.
+% A matriz fontes de tensÃ£o independentes no ramo recebe as tensÃµes geradas
+% pelo capacitor e indutor. A matriz impedÃ¢ncia recebe a soma das
+% impedÃ¢ncias geradas por todos os elementos tambÃ©m.
 
 Vs = Vs + Vcap*imp + Vind*imp;
 
 Z = Zr + Zc + Zl;
 
-%% Criação da Matriz Admitância de Ramo
+%% CriaÃ§Ã£o da Matriz AdmitÃ¢ncia de Ramo
 
-% Vamos criar uma matriz quadrada nula Yb de tamanho Número de Ramos x Número de
-% Ramos que irá receber em sua diagonal principal as admitâncias de cada
+% Vamos criar uma matriz quadrada nula Yb de tamanho NÃºmero de Ramos x NÃºmero de
+% Ramos que irÃ¡ receber em sua diagonal principal as admitÃ¢ncias de cada
 % ramo
 
 Yb = sym(zeros(b,b)); 
 for i=1:b
     Yb(i,i) = 1/(Z(i)); 
-    % i = número do ramo, então o elemento (i,i) da matriz recebe a
-    % admitância daquele ramo i
+    % i = nÃºmero do ramo, entÃ£o o elemento (i,i) da matriz recebe a
+    % admitÃ¢ncia daquele ramo i
 end
 
-%% Resolução das equações da rede
+%% ResoluÃ§Ã£o das equaÃ§Ãµes da rede
 
-Ye = A*Yb*A' % Matriz Admitância de Nó
-Is = A*Yb*Vs - A*Js % Vetor Fontes de Corrente e Fontes de Tensão/Impedância do ramo que incidem no nó
-E = inv(Ye)*Is % Vetor Tensões de Nó
-V = (A')*E % Vetor Tensões de Ramo
+Ye = A*Yb*A' % Matriz AdmitÃ¢ncia de NÃ³
+Is = A*Yb*Vs - A*Js % Vetor Fontes de Corrente e Fontes de TensÃ£o/ImpedÃ¢ncia do ramo que incidem no nÃ³
+E = inv(Ye)*Is % Vetor TensÃµes de NÃ³
+V = (A')*E % Vetor TensÃµes de Ramo
 J = (Js + (Yb*V) - (Yb*Vs)) % Vetor Correntes de Ramo
 
 VRamo = ilaplace(V)
 ENo = ilaplace(E)
 JRamo = ilaplace(J)
 
-%% Passando pra planilha
+% Plot das tesÃµes de ramo e de nÃ³ e das correntes de ramo do circuito
+TensaoRamo = VRamo;
+tempo = [0:0.0001:0.5];
+TenRamo = double(subs(TensaoRamo,symvar(TensaoRamo),tempo));
+plot(tempo,TenRamo);
 
-% Name of the excel file
-filename = 'C:\Users\santo_509teb3\Google Drive (ruan.santos@cear.ufpb.br)\Engenharia Elétrica\5º Período\Circuitos II\Projeto Circuitos II\Questão 2\Circuito_Laplace.xls';
-% Open Excel as a COM Automation server
-Excel = actxserver('Excel.Application');
-% Open Excel workbook
-Workbook = Excel.Workbooks.Open(filename);
-% Clear the content of the sheet
-Workbook.Worksheets.Item('Resultados').Range('A2:C20').ClearContents  
-% Now save/close/quit/delete
-Workbook.Save;
-Excel.Workbook.Close;
-invoke(Excel, 'Quit');
-delete(Excel)
+TensaoNo = ENo;
+tempo = [0:0.0001:0.5];
+TenNo = double(subs(TensaoRamo,symvar(TensaoNo),tempo));
+plot(tempo,TenNo);
 
-% Aqui temos mais e mais problemas. Não conseguimos criar o arquivo de
-% saída diretamente com os dados em simbólico. Também não foi possível
-% transformá-lo direto para um dado numérico através da função "double",
-% então a saída encontrada foi transformar em um char, dividir o elemento
-% único (que já estava previamente separada por vírgulas os elementos que 
-% desejávamos quando em CHAR) em três strings separadas. Ainda, eliminamos
-% o texto que não desejávamos exibir, e pegamos a transposta (pois a matriz
-% original estava em linha) para exibir finalmente na planilha de saída.
+CorrenteRamo = JRamo;
+tempo = [0:0.0001:0.5];
+CorRamo = double(subs(TensaoRamo,symvar(CorrenteRamo),tempo));
+plot(tempo,CorRamo);
 
-Vchar = char(VRamo);
-Vsplit = strsplit(Vchar,', ');
-Vcell = cellstr(Vsplit);
-Erase1 = regexprep(Vcell,'matrix([','','ignorecase');
-Erase2 = regexprep(Erase1,'])','','ignorecase');
-Vcell = Erase2';
-
-Echar = char(ENo);
-Esplit = strsplit(Echar,', ');
-Ecell = cellstr(Esplit);
-Erase3 = regexprep(Ecell,'matrix([','','ignorecase');
-Erase4 = regexprep(Erase3,'])','','ignorecase');
-Ecell = Erase4';
-
-Jchar = char(JRamo);
-Jsplit = strsplit(Jchar,', ');
-Jcell = cellstr(Jsplit);
-Erase5 = regexprep(Jcell,'matrix([','','ignorecase');
-Erase6 = regexprep(Erase5,'])','','ignorecase');
-Jcell = Erase6';
-
-xlswrite('Circuito_Laplace', Vcell, 'Resultados', 'A2');
-xlswrite('Circuito_Laplace', Jcell, 'Resultados', 'B2');
-xlswrite('Circuito_Laplace', Ecell, 'Resultados', 'C2');
-
-TensaoRamo = VRamo(5);
-tempo = [0:0.0001:0.4];
-corramo = double(subs(TensaoRamo,symvar(TensaoRamo),tempo));
-
-plot(tempo,corramo);
-
-%% Algumas Referências 
+%% Algumas ReferÃªncias 
 % https://www.mathworks.com/matlabcentral/answers/7717-xlswrite-clear-cells-and-write-multiple-values
 % https://www.mathworks.com/help/matlab/ref/uigetfile.html
 % https://www.mathworks.com/help/symbolic/laplace.html
 % https://www.mathworks.com/help/symbolic/ilaplace.html
 % https://uk.mathworks.com/matlabcentral/answers/356617-how-to-remove-a-some-part-of-a-string-from-a-string
-% Além de vários e vários tópicos no fórum do mathworks
+% AlÃ©m de vÃ¡rios e vÃ¡rios tÃ³picos no fÃ³rum do mathworks
