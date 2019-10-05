@@ -1,18 +1,7 @@
-% % % % % % % % % % % % % % % % QUESTÃO 1 % % % % % % % % % % % % % % % %
-
-% Questão 1 da tarefa referente à disciplina CIRCUITOS ELÉTRICOS II feita
-% pelo grupo Composto por:
-
-% Ana Paula Chaves Cabral - 20170024791
-% Diana Bezerra Correia Lima - 20170017358
-% Ruan Carlos Virginio dos Santos - 20170018711
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-
 clear all
 clc
  
-%% Nesta primeira seção, abrimos a planilha de entrada de dados do excel (Apenas formatos .xlsx e .xls)
+%% Nesta primeira seÃ§Ã£o, abrimos a planilha de entrada de dados do excel (Apenas formatos .xlsx e .xls)
 
 [file, path] = uigetfile({'*.xlsx;*.xls'});
 
@@ -23,11 +12,11 @@ end
 
 dados = xlsread(strcat(path,file)); 
 
-%% Nesta seção, vamos coletar os dados das colunas e transformar o número complexo separado em parte real e imaginária em um só
+%% Nesta seÃ§Ã£o, vamos coletar os dados das colunas e transformar o nÃºmero complexo separado em parte real e imaginÃ¡ria em um sÃ³
 
 jj = sqrt(-1); %Complexo 
 
-% Lendo os dados de cada coluna do arquivo e salvando nas variáveis
+% Lendo os dados de cada coluna do arquivo e salvando nas variÃ¡veis
 
 ZReal = dados(:,3); 
 ZImag = dados(:,4);
@@ -36,56 +25,56 @@ VImag = dados(:,6);
 IReal = dados(:,7);
 IImag = dados(:,8);
 
-% Transformando em um vetor complexo só 
+% Transformando em um vetor complexo sÃ³ 
 
 Z = ZReal + jj*ZImag; 
 Vs = VReal + jj*VImag;
 Js = IReal + jj*IImag;
 
-%% Nesta seção, coletamos o tamanho da matriz digitada pelo usuário e o número de ramos e nós do circuito
+%% Nesta seÃ§Ã£o, coletamos o tamanho da matriz digitada pelo usuÃ¡rio e o nÃºmero de ramos e nÃ³s do circuito
 
 Tamanho = size(dados); % Tamanho da matriz de dados (linhas, colunas)
-b = Tamanho(1); % O numero de linhas da matriz TAMANHO é o mesmo número de RAMOS do circuito
+b = Tamanho(1); % O numero de linhas da matriz TAMANHO Ã© o mesmo nÃºmero de RAMOS do circuito
 
-% Como cada ramo sai de um certo nó N e chega em outro nó N, essa seção
+% Como cada ramo sai de um certo nÃ³ N e chega em outro nÃ³ N, essa seÃ§Ã£o
 % verifica os valores escritos nas duas primeiras colunas da planilha e
-% salva o maior valor encontrado na variável Nt
+% salva o maior valor encontrado na variÃ¡vel Nt
 
-Nt = 0; % Número de NÓS
+Nt = 0; % NÃºmero de NÃ“S
 
-for i=1:b % Salva o maior número de nós analisando a coluna 1 da tabela
-    ntemp = dados(i,1); % Coletando dados da coluna 1 (Nó de saída)
+for i=1:b % Salva o maior nÃºmero de nÃ³s analisando a coluna 1 da tabela
+    ntemp = dados(i,1); % Coletando dados da coluna 1 (NÃ³ de saÃ­da)
     
     if(ntemp > Nt)
         Nt = ntemp;
     end
     
-    ntemp = dados(i,2); % Coletando dados da coluna 2 (Nó de entrada)
+    ntemp = dados(i,2); % Coletando dados da coluna 2 (NÃ³ de entrada)
 
     if(ntemp > Nt)
         Nt = ntemp;
     end
 end
 
-%% Criando a Matriz de Incidência Ramo-Nó e sua Reduzida
+%% Criando a Matriz de IncidÃªncia Ramo-NÃ³ e sua Reduzida
 
-% Criamos uma matriz nula do tamanho Número de Nós x Número de Ramos para
-% receber a matriz incidência com "1" se é um nó de saída e "-1" se for um
-% nó de entrada
+% Criamos uma matriz nula do tamanho NÃºmero de NÃ³s x NÃºmero de Ramos para
+% receber a matriz incidÃªncia com "1" se Ã© um nÃ³ de saÃ­da e "-1" se for um
+% nÃ³ de entrada
 
 Aa = zeros(Nt,b); 
 
-for i=1:b % Alteração dos valores da matriz de acordo com a saida e entrada no nó
+for i=1:b % AlteraÃ§Ã£o dos valores da matriz de acordo com a saida e entrada no nÃ³
     Aa((dados(i,1)),i) =  1;
     Aa((dados(i,2)),i) = -1;
 end
 
-% Assim, teremos a matriz Incidência Ramo-Nó Aa:
+% Assim, teremos a matriz IncidÃªncia Ramo-NÃ³ Aa:
 
 Aa
 
-% Agora, reduzimos essa matriz removendo sua última linha, que será
-% considerada a do nó de referência do circuito
+% Agora, reduzimos essa matriz removendo sua Ãºltima linha, que serÃ¡
+% considerada a do nÃ³ de referÃªncia do circuito
 
 for i=1:(Nt -1)
     for j=1:b
@@ -93,39 +82,39 @@ for i=1:(Nt -1)
     end
 end
 
-% O que nos deixa, portanto, com a matriz de incidência Ramo-Nó reduzida A
+% O que nos deixa, portanto, com a matriz de incidÃªncia Ramo-NÃ³ reduzida A
 
 A
 
-%% Criação da Matriz Admitância de Ramo
+%% CriaÃ§Ã£o da Matriz AdmitÃ¢ncia de Ramo
 
-% Vamos criar uma matriz quadrada nula Yb de tamanho Número de Ramos x Número de
-% Ramos que irá receber em sua diagonal principal as admitâncias de cada
+% Vamos criar uma matriz quadrada nula Yb de tamanho NÃºmero de Ramos x NÃºmero de
+% Ramos que irÃ¡ receber em sua diagonal principal as admitÃ¢ncias de cada
 % ramo
 
 Yb = zeros(b,b); 
 for i=1:b
     Yb(i,i) = 1/(Z(i)); 
-    % i = número do ramo, então o elemento (i,i) da matriz recebe a
-    % admitância daquele ramo i
+    % i = nÃºmero do ramo, entÃ£o o elemento (i,i) da matriz recebe a
+    % admitÃ¢ncia daquele ramo i
 end
 
-%% Resolução das equações da rede
+%% ResoluÃ§Ã£o das equaÃ§Ãµes da rede
 
-Ye = A*Yb*A' % Matriz Admitância de Nó
-Is = A*Yb*Vs - A*Js % Vetor Fontes de Corrente e Fontes de Tensão/Impedância do ramo que incidem no nó
-E = inv(Ye)*Is % Vetor Tensões de Nó
-V = (A')*E % Vetor Tensões de Ramo
+Ye = A*Yb*A' % Matriz AdmitÃ¢ncia de NÃ³
+Is = A*Yb*Vs - A*Js % Vetor Fontes de Corrente e Fontes de TensÃ£o/ImpedÃ¢ncia do ramo que incidem no nÃ³
+E = inv(Ye)*Is % Vetor TensÃµes de NÃ³
+V = (A')*E % Vetor TensÃµes de Ramo
 J = (Js + (Yb*V) - (Yb*Vs)) % Vetor Correntes de Ramo
 
-%% Enviando os dados das matrizes para um arquivo xls de saída
+%% Enviando os dados das matrizes para um arquivo xls de saÃ­da
 
-% Prepararemos a planilha de saída para receber os dados. Então, limparemos
-% todos os dados anteriormentes salvos, exceto o cabeçalho que nos diz o
+% Prepararemos a planilha de saÃ­da para receber os dados. EntÃ£o, limparemos
+% todos os dados anteriormentes salvos, exceto o cabeÃ§alho que nos diz o
 % que cada coluna nos diz.
 
 % Name of the excel file
-filename = 'C:\Users\santo_509teb3\Google Drive (ruan.santos@cear.ufpb.br)\Engenharia Elétrica\5º Período\Circuitos II\Projeto Circuitos II\Questão 1\Circuito.xls';
+filename = 'C:\Users\santo_509teb3\Google Drive (ruan.santos@cear.ufpb.br)\Engenharia ElÃ©trica\5Âº PerÃ­odo\Circuitos II\Projeto Circuitos II\QuestÃ£o 1\Circuito.xls';
 % Open Excel as a COM Automation server
 Excel = actxserver('Excel.Application');
 % Open Excel workbook
@@ -139,11 +128,11 @@ invoke(Excel, 'Quit');
 delete(Excel)
 
 
-% A função num2str serve para transformar os valores complexos da matriz em
-% uma string, pois sem essa função, só aparecia os valores reais de cada
-% elemento dos vetores. Sem a função cellstr, cada caractere da string caía
-% em uma coluna no excel. Com a função cellstr, a string fica em um
-% elemento só na planilha
+% A funÃ§Ã£o num2str serve para transformar os valores complexos da matriz em
+% uma string, pois sem essa funÃ§Ã£o, sÃ³ aparecia os valores reais de cada
+% elemento dos vetores. Sem a funÃ§Ã£o cellstr, cada caractere da string caÃ­a
+% em uma coluna no excel. Com a funÃ§Ã£o cellstr, a string fica em um
+% elemento sÃ³ na planilha
 
 Vstr = num2str(V)
 Vcell = cellstr(Vstr)
@@ -154,14 +143,14 @@ Jcell = cellstr(Jstr)
 Estr = num2str(E)
 Ecell = cellstr(Estr)
 
-% A função xlswrite envia para a planilha CIRCUITO, as matrizes (V/J/E), 
+% A funÃ§Ã£o xlswrite envia para a planilha CIRCUITO, as matrizes (V/J/E), 
 % na folha RESULTADOS, para o elemento (A2/B2/C2) em diante.
 
 xlswrite('Circuito', Vcell, 'Resultados', 'A2');
 xlswrite('Circuito', Jcell, 'Resultados','B2');
 xlswrite('Circuito', Ecell, 'Resultados', 'C2');
 
-%% Algumas Referências 
+%% Algumas ReferÃªncias 
 % https://www.mathworks.com/matlabcentral/answers/7717-xlswrite-clear-cells-and-write-multiple-values
 % https://www.mathworks.com/help/matlab/ref/uigetfile.html
 % https://www.mathworks.com/help/matlab/ref/cellstr.html
