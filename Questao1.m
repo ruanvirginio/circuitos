@@ -18,12 +18,12 @@ jj = sqrt(-1); %Complexo
 
 % Lendo os dados de cada coluna do arquivo e salvando nas variáveis
 
-ZReal = dados(:,3); 
-ZImag = dados(:,4);
-VReal = dados(:,5);
-VImag = dados(:,6);
-IReal = dados(:,7);
-IImag = dados(:,8);
+ZReal = dados(:,3); % Coletando dados da parte real da impedância
+ZImag = dados(:,4); % Coletando dados da parte imaginária da impedância
+VReal = dados(:,5); % Coletando dados da parte real da tensão
+VImag = dados(:,6); % Coletando dados da parte imaginária da tensão
+IReal = dados(:,7); % Coletando dados da parte real da corrente
+IImag = dados(:,8); % Coletando dados da parte imaginária da corrente
 
 % Transformando em um vetor complexo só 
 
