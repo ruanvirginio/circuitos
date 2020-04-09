@@ -18,22 +18,22 @@ dados = xlsread(strcat(path,file));
 
 % Lendo os dados de cada coluna do arquivo e salvando nas variáveis
 
-Nos = dados(:,1:2);
-R = dados(:,3); 
-H = dados(:,4);
-F = dados(:,5);
-ModT = sym(dados(:,6));
-At = dados(:,7);
-Bt = dados(:,8);
-FaseT = sym(dados(:,9));
-ModC = sym(dados(:,10));
-Ac = dados(:,11);
-Bc = dados(:,12);
-FaseC = sym(dados(:,13));
-i0 = dados(:,14);
-v0 = dados(:,15);
-TipoTensao = sym(dados(:,16));
-TipoCorrente = sym(dados(:,17));
+Nos = dados(:,1:2); % Coletando dados dos nós de entrada e saída
+R = dados(:,3); % Coletando dados dos resistores
+H = dados(:,4); % Coletando dados dos indutores
+F = dados(:,5); % Coletando dados dos capacitor
+ModT = sym(dados(:,6)); % Coletando o módulo da tensão
+At = dados(:,7); % Coletando o parameto alfa da fonte de tensão
+Bt = dados(:,8); % Coletando o parameto beta da fonte de tensão
+FaseT = sym(dados(:,9)); % Coletando a fase da fonte de tensão
+ModC = sym(dados(:,10)); % Coletando o módulo da corrente
+Ac = dados(:,11); % Coletando o parameto alfa da fonte de corrente
+Bc = dados(:,12); % Coletando o parameto beta da fonte de corrente
+FaseC = sym(dados(:,13)); % Coletando a fase da fonte de corrente
+i0 = dados(:,14); % Coletando a corrente inicial do indutor
+v0 = dados(:,15); % Coletando a tensão inicial do capacitor
+TipoTensao = sym(dados(:,16)); % Coletando tipo da fonte de tensão
+TipoCorrente = sym(dados(:,17)); % Coletando tipo da fonte de tensão
 
 %% Nessa seção, encontramos o número de nós e ramos do circuito
 
@@ -107,7 +107,7 @@ u = laplace(ut);
 
 Vs = sym(zeros(b,1));
 Js = sym(zeros(b,1));
-
+% ANA, COMENTE A PARTIR DAQUI 
 Cossenot = sym(zeros(b,1));
 Cossenoc = sym(zeros(b,1));
 
@@ -221,6 +221,8 @@ for n = 1:b
     
 end
 
+% ATÉ AQUI, APANAULINHA
+
 A = A*imp;
 
 % O for abaixo cria os vetores das impedâncias de cada um dos elementos que
@@ -275,6 +277,7 @@ E = inv(Ye)*Is % Vetor Tensões de Nó
 V = (A')*E % Vetor Tensões de Ramo
 J = (Js + (Yb*V) - (Yb*Vs)) % Vetor Correntes de Ramo
 
+% Fazendo a transformada inversa de Laplace, voltando para o domínio do tempo:
 VRamo = ilaplace(V)
 ENo = ilaplace(E)
 JRamo = ilaplace(J)
